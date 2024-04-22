@@ -1,8 +1,6 @@
-import time
-import schedule
+import os
 import yaml
 from datetime import datetime, timedelta
-import os
 from PyPDF2 import PdfReader
 
 def contar_paginas_pdf(diretorio, diretorio_saida, periodo_inicial, periodo_final, diretorio_saida_log):
@@ -11,8 +9,11 @@ def contar_paginas_pdf(diretorio, diretorio_saida, periodo_inicial, periodo_fina
     periodo_final_dt = datetime.strptime(periodo_final, "%d/%m/%Y")
 
     # Registro de início do processamento geral
-    data_inicio_processamento = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    registrar_inicio_fim_log(data_inicio_processamento, 'Inicio do processamento', diretorio_saida, diretorio_saida_log)
+    data_inicio_processamento = datetime.now().strftime("%H:%M:%S")
+    data_inicio_processamento2 = datetime.now().strftime("%Y/%m/%d")
+
+    
+    registrar_inicio_fim_log( data_inicio_processamento, f'Inicio do processamento  {data_inicio_processamento2}', diretorio_saida, diretorio_saida_log)
 
     # Loop para cada dia dentro do período especificado
     while periodo_inicial_dt <= periodo_final_dt:
@@ -52,8 +53,9 @@ def contar_paginas_pdf(diretorio, diretorio_saida, periodo_inicial, periodo_fina
         periodo_inicial_dt += timedelta(days=1)
 
     # Registro de fim do processamento geral
-    data_fim_processamento = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    registrar_inicio_fim_log(data_fim_processamento, 'Fim do processamento', diretorio_saida, diretorio_saida_log)
+    data_fim_processamento = datetime.now().strftime("%H:%M:%S")
+    
+    registrar_inicio_fim_log(data_fim_processamento, f'Fim do processamento {data_inicio_processamento2}', diretorio_saida, diretorio_saida_log)
     
 def registrar_inicio_fim_log(mensagem, data_hora, diretorio_saida, diretorio_saida_log):
     # Verificar se o diretório de saída existe, se não, criar
@@ -112,22 +114,5 @@ def executar_tarefa():
         print("O diretório de saída não está definido no arquivo YAML.")
 
 if __name__ == "__main__":
-    parametros = ler_parametros('paramfile.yaml')
-    hora_inicio = parametros['data_inicio']
-    hora_fim = parametros['data_fim']
-
-    # Agendar a execução do script na hora de início
-    schedule.every().day.at(hora_inicio).do(executar_tarefa)
-
-    # Loop para verificar e executar as tarefas agendadas
-    while True:
-        # Obter a hora atual
-        hora_atual = datetime.now().strftime('%H:%M')
-        
-        # Verificar se é hora de encerrar a execução
-        if hora_atual >= hora_fim:
-            break
-        
-        # Verificar e executar as tarefas agendadas
-        schedule.run_pending()
-        time.sleep(10)  # Verificar a cada minuto
+    # Executar a tarefa manualmente
+    executar_tarefa()

@@ -1,7 +1,6 @@
 # paramfile.yaml
 
-diretorio: ''
-diretorio_saida: ''
-diretorio_saida_log: ''
-data_inicio: '11:58'
-data_fim: '11:59'
+diretorio: 'C:\\Banco-de-dados'
+diretorio_saida: 'C:\\Users\\anderson.filho\\Desktop\\teste\\script'
+diretorio_saida_log: 'C:\\Users\\anderson.filho\\Desktop\\teste\\log'
+
